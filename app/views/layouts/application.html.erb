@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<meta name="viewport" content="user-scalable=no, initial-scale=1, minimum-scale=1, maximum-scale=1, width=device-width, height=device-height"/>
+<head>
+  <title>The Network</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+
+<div id="wrapper">
+<div id="sidebar">
+  <% if session[:user_id] %>
+     <% @active_user_name = User.find(session[:user_id]).username %>
+    <span id="links">
+      <%= link_to 'Home', active_user_home_url %>
+      <%= link_to 'Logout', {controller: "active_user", action: "logout"}, {method: :post} %>
+    </span>
+    <span id="session_info">
+     Logged in as: <b><%= @active_user_name %></b>
+    </span>
+  <% end %>
+</div>
+<% if notice %>
+<p id="notice"><%= notice %></p>
+<% end %>
+
+  <%= yield %>
+<br>
+<footer>&#169 Hadley Productions 2016</footer>
+</div>
+
+</body>
+</html>

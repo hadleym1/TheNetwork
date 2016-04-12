@@ -1,0 +1,9 @@
+$('#fan_responses').html("");
+<% if session[:show_hide_responses] %>
+  $('#show_hide_responses').html("Hide Responses");
+  <% @fan_responses.each do |response| %>
+      $('#fan_responses').append("<p><b><%= User.find(response.fan_id).username %></b>:  <%= response.response %> </p>");
+  <% end %>
+<% else %>
+  $('#show_hide_responses').html("Show Responses");
+<% end %>

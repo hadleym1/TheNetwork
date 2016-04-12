@@ -1,0 +1,93 @@
+// Place all the styles related to the Chat controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+#send_chat_message {
+  border: none;
+  padding: 3px;
+}
+
+#message_field {
+  border: none;
+  padding: 3px;
+}
+
+#chat_main {
+  padding: 10px;
+  height: 500px;
+  width: 400px;
+  background-color: #353535;
+  border-radius: 5px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+#chat_form {
+  width: 420px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  text-align: center;
+  background-color: #353535;
+  border-radius: 5px;
+  border-top: 5px solid #F1A629; 
+}
+
+#chat_header {
+  width: 420px;
+  text-align: center;
+  background-color: #353535; 
+  border-bottom: 5px solid #F1A629; 
+  border-radius: 5px;
+  color: #ECECEC;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  width: 420px;
+}
+
+.remote_message {
+  background-color: #ECECEC; 
+  border-radius: 10px;
+  padding: 5px;
+  float: left;
+  clear: left;
+  word-wrap: break-word;
+}
+
+.local_message {
+  background-color: #F1A629; 
+  border-radius: 10px;
+  padding: 5px;
+  float: right;
+  clear: right;
+  text-align: right;
+  word-wrap: break-word;
+}
+
+@media screen and (device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) 
+{
+
+html, body {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+}
+
+#send_chat_message {
+   -webkit-appearance: none;
+   -moz-appearance: none;
+   appearance: none;
+   background-color: white;
+   height: 40px;
+   font-size: 14pt;
+}
+
+#message_field {
+  border: none;
+  padding: 3px;
+  height: 40px;
+  font-size: 14pt;
+}
+
+
+
+}

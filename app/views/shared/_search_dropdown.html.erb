@@ -1,0 +1,125 @@
+ <div class="inline" id="search">
+   <script>
+   function showResults()
+   {
+     if (showResults.isHidden == true)
+     {
+       var searchDropDown = document.getElementById("search_drop_down");
+       if (searchDropDown.size != 0)
+       {
+         searchDropDown.style.display = "inline";
+         showResults.isHidden = false;
+       }
+       else 
+       {
+	 alert("No search results to be displayed.");
+       }
+
+       return;
+     }
+     else 
+     {
+       var searchDropDown = document.getElementById("search_drop_down");
+       searchDropDown.style.display = "none";
+       showResults.isHidden = true;
+     }
+   }
+
+  $(document).ready(function() {
+     showResults.isHidden = true;
+
+     var searchDropDown = document.getElementById("search_drop_down");
+     // when the user types something in the search field, filter the search results
+
+     $("#search_drop_down").change(function() {
+	// found a user we want to view
+        var selectedUser = this.value;	
+	window.location = '/show_user/index?id=' + selectedUser;
+     });
+
+     $("#search_field").keyup(function(){
+       showResults.isHidden = false;
+
+    // this is the text content of the search field
+
+    var searchText = document.getElementById("search_field").value;
+    searchText = searchText.trim().toLowerCase();
+
+    var usersList = "<h3>Search Results</h3>";
+    var results = 0;
+
+    if (searchText.length > 0)
+    {
+    // pass in the search text to the partial and render new drop down values (if appropriate)
+
+    var fullUsersList = '<%=escape_javascript(render partial: "shared/user", collection: User.all)%>';
+    fullUsersList = fullUsersList.split('\n'); 
+
+    var child = searchDropDown.firstChild;
+ //   console.log("Search Text is: " + searchText);
+ 
+    for (var i = 0; i < fullUsersList.length; i++) 
+    {
+	if (fullUsersList[i].length <= 0)
+	   continue;
+
+        var value = fullUsersList[i].trim().toLowerCase();	
+//	console.log("Option value is: " + value);
+        if (value.indexOf(searchText) >=  0)
+        {
+	  // keep 
+
+//	  console.log("Adding option: " + value);
+	  usersList += value;
+          results++;
+	}
+    };
+
+    }
+    $('#search_drop_down').attr('size', results);
+    
+    if (results == 0)
+    {
+        //searchDropDown.style.display= "none"; 
+ 	usersList += "<p>No Results</p>";
+    }
+    else { 
+
+         searchDropDown.style.display= "inline"; 
+  	 //if (results == 1)
+   	 //{
+      	  //  usersList += "<p></option>";
+           // $('#search_drop_down').attr('size', 2);
+    	// }
+     
+    	if (results == 10)
+    	{
+      	    usersList += "<p>See more results...</p>";
+       	    $('#search_drop_down').attr('size', 11);
+    	}
+    }
+
+    // only if different
+//    console.log("usersList: " + usersList);
+ //   console.log("innerHTML: " + searchDropDown.innerHTML);
+    if (searchDropDown.innerHTML != usersList)
+    {
+//	console.log("setting new innerHTML...");
+    	searchDropDown.innerHTML = usersList;
+    }
+
+   })});
+   
+   </script>
+
+   <%= form_tag do %> 
+    <div id="search_wrapper">
+      <input id="search_field" type="search" placeholder="Search Users"></input>
+      <button type="button" id="search_drop_down_button" onclick="showResults()"></button>
+    </div>
+    <%= submit_tag "Search", {'id' => 'search_button'} %>
+    <br>
+    <div id="search_drop_down" style="display:none">
+    </div>
+   <% end %>
+ </div>

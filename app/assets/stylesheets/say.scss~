@@ -1,0 +1,41 @@
+// Place all the styles related to the Say controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+#wrapper {
+  background-color: #f5ba5c;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  height: 500px;
+}
+
+.user_form {
+   fieldset {
+     width: 320px;
+     border-radius: 5px;
+     margin-left: auto;
+     margin-right: auto;
+   }
+}
+
+form {
+  label {
+   width: 5em;
+   float: left;
+   text-align: right;
+   padding-top: 0.2em;
+   margin-right: 0.1em;
+   display: block;
+  }
+ 
+  input {
+   margin-left: 0.5em;
+  }
+
+  .actions {
+   text-align: right;
+  }
+}
+
+

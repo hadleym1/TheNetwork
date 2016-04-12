@@ -1,0 +1,93 @@
+<h1>Welcome to The Network!</h1>
+
+<div id="info_header">
+<p>Now <b><%= @total_users %></b> registered users</p>
+<p>Login or sign up below to get started...</p>
+</div>
+
+<% if session[:mobile_device] %>
+<% end %>
+
+<% if flash[:alert] %>
+ <div id="error_explanation">
+  <h2>The following error occurred:</h2>
+   <p id="alert"><%= flash[:alert] %></p>
+ </div>
+<% end %>
+
+	<div class="login_form">
+	<%= form_for @login_user, url: {controller: "say", action: "login"} do |f| %>
+	<% if @login_user.errors.any? %>
+	 <div id="error_explanation">
+	  <h2><%= pluralize(@login_user.errors.count, "error")%>
+	    prohibited this user from being saved:</h2>
+	  <ul>
+	  <% @login_user.errors.full_messages.each do |msg| %>
+	    <li><%= msg %></li>
+	  <% end %>
+	  </ul>
+	  </div>
+	<% end %>
+
+	<fieldset>
+	<legend>Login Information</legend>
+
+	<div class="field">
+	  <!-- <%= f.label :username, 'Name:'  %> !-->
+	  <%= f.text_field :username, size: 25, placeholder: "Username" %>
+	</div>
+
+	<div class="field">
+	  <!-- <%= f.label :password, 'Password:' %> !-->
+	  <%= f.password_field :password, size: 25, placeholder: "Password" %>
+	</div>
+
+	<div class="actions">
+	  <%= f.submit 'Login', {'id' => 'login_button'} %>
+	</div>
+	</fieldset>
+	<% end %>
+	</div>
+
+	<b>Or:</b>
+
+	<div class="signup_form">
+	<%= form_for @signup_user, url: { controller: "say", action: "signup" } do |f| %>
+	<% if @signup_user.errors.any? %>
+	 <div id="error_explanation">
+	  <h2><%= pluralize(@signup_user.errors.count, "error")%>
+	    prohibited this user from being saved:</h2>
+	  <ul>
+	  <% @signup_user.errors.full_messages.each do |msg| %>
+	    <li><%= msg %></li>
+	  <% end %>
+	  </ul>
+	  </div>
+	<% end %>
+
+	<fieldset>
+	<legend>New User Information</legend>
+
+	<div class="field">
+	  <!-- <%= f.label :username, 'Name:' %> !-->
+	  <%= f.text_field :username, size: 25, placeholder: "Username" %>
+	</div>
+
+	<div class="field">
+	  <!-- <%= f.label :password, 'Password:' %> !-->
+	  <%= f.password_field :password, size: 25, placeholder: "Password" %>
+	</div>
+
+	<div class="field">
+	 <!-- <%= f.label :password_confirmation, 'Confirm:' %> !-->
+	  <%= f.password_field :password_confirmation, size: 25, placeholder: "Confirm Password" %>
+	</div>
+
+	<div class="actions">
+	  <%= f.submit 'Sign Up', {'id' => 'sign_up_button'} %>
+	</div>
+	</fieldset>
+	<% end %>
+	</div>
+
+

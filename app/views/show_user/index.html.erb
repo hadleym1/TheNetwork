@@ -1,0 +1,32 @@
+<% if @user != nil %>
+  <h1 style="display:inline-block"><%= @user.username %></h1>
+  <a id="chat_link" class="<%= @user.username%>">Message</a>
+  <%= link_to 'Delete', 'delete_fan?fan_id=' + @user.id.to_s, {id: "delete_fan", class: @user.username, method: :post, remote: true} %>
+
+  <p><b><%= @user.username %></b> joined on <%= @join_date %></p>
+<% if !@already_fan %>
+ <%= form_tag do %>
+    <%= hidden_field_tag 'id', @user.id %>
+    <%= submit_tag "Become a Fan", {id: "fan_button"}%>
+ <% end %>
+<% end %>
+
+<% else %>
+  <h1>No user to show</h1>
+<% end %>
+<script>
+ document.getElementById('chat_link').onclick= function() 
+ {
+        var user = this.className;
+    	window.open('/chat/index?remote=true&user=' + user, "Chat", "top=200, left=200, width=450, height=400");
+ }
+ 
+ document.getElementById('delete_fan').onclick= function() 
+ {
+    var fan = this.className; 
+    return confirm("Are you sure you want to delete " + fan + "?");
+ }
+ 
+</script>
+
+

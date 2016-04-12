@@ -1,0 +1,10 @@
+
+
+<% if @requesting_user != nil %>
+  var doc = document.getElementById("event_notice");
+  var user = "<%= @requesting_user.username %>";
+  var acceptButton = "<a onclick='chatWithLocalUser(user);'>Accept</a>";
+  var ignoreButton = "<a onclick='clearEvents()'/>Ignore</a>";
+  doc.innerHTML = "<b>User: <%= @requesting_user.username %></b> wants to chat  " + acceptButton + "  " +  ignoreButton;
+
+<% end %>

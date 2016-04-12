@@ -1,0 +1,26 @@
+// find and use jquery object to update the message table
+<% @messageUpdate = false %>
+// remote messages
+<% if @messages != nil %>
+  <% @messages.each do |m| %>
+    $('#chat_main').append("<br><p class='remote_message'><%= m.message %></p><br><br>");
+  <% end %>
+  <% @messageUpdate = true %>
+<% end %>
+
+// local messages
+<% if @message != nil %>
+    $('#chat_main').append("<br><p class='local_message'><%= @message.message %></p><br><br>");
+  <% @messageUpdate = true %>
+<% end %>
+
+<% if @messageUpdate %>
+  // move scrollbar to bottom
+  var objDiv = document.getElementById("chat_main");
+  objDiv.scrollTop = objDiv.scrollHeight;
+
+  // clear message textbox
+  var obj = document.getElementById("message");
+  obj.value = "";
+ 
+<% end %>

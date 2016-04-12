@@ -1,0 +1,85 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+
+
+
+#wrapper {
+  background: #353535 url("MobileNetworkBanner.png") no-repeat;
+  border: 2px solid;
+  padding: 10px;
+  text-align: center;
+}
+
+#alert {
+  color: black;
+}
+
+#notice {
+  color: #f1a629;
+}
+
+footer {
+  color: white;
+  text-align: center;
+}
+
+#sidebar {
+	background-color: #F1A629; 
+	border-radius: 10px;
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-top: 100px;
+        text-align: left;
+}
+
+#session_info{
+  float: right;
+  padding-right: 10px;
+}
+
+
+
+#sidebar a {
+	color: #000000 !important;
+  	padding-left: 20px;
+}
+
+a { 
+	color: #FFFFFF !important;
+	text-decoration: underline !important;
+}
+
+a:hover { 
+	//font-weight: bold;	
+	background-color: transparent !important;
+	cursor: pointer;
+}
+
+@media screen and (device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) 
+{
+
+html, body {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+} 
+
+h1 {
+ font-size: 14pt;
+}
+
+}

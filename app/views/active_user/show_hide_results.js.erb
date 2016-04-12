@@ -1,0 +1,23 @@
+$('#fan_vote_results').html("");
+<% if session[:show_hide_results] %>
+  $('#show_hide_results').html("Hide Results");
+ <% if @fan_poll_options && !@fan_poll_options.empty? %>
+  <% @count = 0 %>
+  <% @fan_poll_options.each do |option| %>
+    <% @count = @count + 1 %>
+    <% if @count == 1 %>
+      $('#fan_vote_results').append("<p><b>Option 1: </b><%= option.option %> (<%= @percentage1.to_s %>%)</p>");
+    <% elsif @count == 2 %>
+      $('#fan_vote_results').append("<p><b>Option 2: </b><%= option.option %> (<%= @percentage2.to_s %>%)</p>");
+    <% elsif @count == 3 %>
+      $('#fan_vote_results').append("<p><b>Option 3: </b><%= option.option %> (<%= @percentage3.to_s %>%)</p>");
+    <% elsif @count == 4 %>
+      $('#fan_vote_results').append("<p><b>Option 4: </b><%= option.option %> (<%= @percentage4.to_s %>%)</p>");
+    <% elsif @count == 5 %>
+      $('#fan_vote_results').append("<p><b>Option 5: </b><%= option.option %> (<%= @percentage5.to_s %>%)</p>");
+    <% end %>
+  <% end %>
+ <% end %>
+<% else %>
+  $('#show_hide_results').html("Show Results");
+<% end %>

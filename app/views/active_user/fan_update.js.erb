@@ -1,0 +1,10 @@
+<% if @fan_id %>
+  var parentDiv = document.getElementById("fans");
+  var child = document.getElementById("fan_" + <%= @fan_id %>);
+  parentDiv.removeChild(child);
+
+  var parentDiv = document.getElementById("updates");
+  var child = document.getElementById("update_" + <%= @fan_id %>);
+  parentDiv.removeChild(child);
+
+<% end %>

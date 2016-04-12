@@ -1,0 +1,48 @@
+<html>
+<%= stylesheet_link_tag "chat" %>
+<%= javascript_include_tag 'application' %>
+
+<meta name="viewport" content="user-scalable=no, initial-scale=1, minimum-scale=1, maximum-scale=1, width=device-width, height=device-height"/>
+<head>
+</head>
+<script>
+
+$(function () {  
+   setTimeout(updateChatMessages, 5000);  
+}); 
+
+function updateChatMessages() {  
+  $.getScript('/chat/update');  // ajax request
+  setTimeout(updateChatMessages, 5000);  
+}
+
+</script>
+
+<body>
+       <div id="chat_header"><b>Chatting with <%= @recipient %></b></div>
+       <div id="chat_main">
+         <% if @previous_messages && @previous_messages.length > 0 %>
+             <% @previous_messages.each do |m| %>
+                <% if m.recipient_id == @active_user_id %>
+		  <br><p class='remote_message'><%= m.message %></p><br><br>  	
+		<% else %>
+		  <br><p class='local_message'><%= m.message %></p><br><br>   	
+                <% end %>
+             <% end %>
+         <% end %>
+       </div>
+  	<div id="chat_form">
+          <%= form_tag({action: "update"}, remote: true) do %> 
+           <%= text_field_tag 'message', nil, {placeholder:'Message', id: 'message_field'} %>
+	   <%= hidden_field_tag 'recipient', @recipient %>
+           <%= submit_tag "Send", {'id' => 'send_chat_message'} %>
+          <% end %>
+        </div>
+</body>
+<script>
+$(function () { 
+  var objDiv = document.getElementById("chat_main");
+  objDiv.scrollTop = objDiv.scrollHeight;
+});
+</script>
+</html>

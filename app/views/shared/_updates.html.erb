@@ -1,0 +1,82 @@
+<div id="updates">
+<% if @fan_messages %>
+   <% @fan_messages.each do |message| %>
+	<p class="fan_updates" id='update_<%=message.owner_id%>'><a href='/show_user/index?id=<%= message.owner_id %>'><b><%= User.find(message.owner_id).username %></b></a>:	<%= message.message %> </p>
+   <% end %>
+<% end %>
+
+<% if @fan_questions %>
+   <% @fan_questions.each do |question| %>
+	<p class="fan_updates" id='update_<%=question.owner_id%>'><a href='/show_user/index?id=<%= question.owner_id %>'><b><%= User.find(question.owner_id).username %></b></a>:	<%= question.question %> 
+	<br>
+       <% @already_responded = false %>
+       <% @responded = FanResponded.where("fan_id = " + session[:user_id].to_s)%>
+       <% if @responded && !@responded.empty? %>
+        <% @responded.each do |response| %>
+ 	  <% if response.responded_to == question.owner_id %>
+  	    <% @already_responded = true %>
+	    <% break %>
+          <% end %>
+	<% end %>
+       <% end %>
+
+	<% if !@already_responded %>
+	  <%= link_to "Respond", {action: "respond_to_question", question_id: question.owner_id}, {id: "respond_to_question_" + question.owner_id.to_s, method: :post, remote: true} %></p>
+
+          <div class="question_responses" id=<%= "question_response_" + question.owner_id.to_s %>>
+         <%= form_tag('/active_user/respond_to_fan') do %>
+    	   <%= text_area_tag :response, params[:response], { :placeholder => 'Response', :cols => 20, :rows => 5, :id => 'response_text_area' } %>
+           <%= hidden_field_tag 'response_id', question.owner_id %>
+           <br>
+    	   <%= submit_tag "Respond", {'id' => 'respond_button'} %>
+         <% end %>
+	</div>
+	<% else %>
+	 <span id="already_responded">Already Responded</span>
+       <% end %>
+   <% end %> 
+<% end %>
+
+<% if @fan_polls %>
+   <% @fan_polls.each do |poll| %>
+	<p class="fan_updates" id='update_<%=poll.owner_id%>'><a href='/show_user/index?id=<%= poll.owner_id %>'><b><%= User.find(poll.owner_id).username %></b></a>:	<%= poll.question %> 
+	<br>
+
+	<% @already_responded = false %>
+       <% @responded = FanResponded.where("fan_id = " + session[:user_id].to_s)%>
+       <% if @responded && !@responded.empty? %>
+        <% @responded.each do |response| %>
+ 	  <% if response.responded_to == poll.owner_id %>
+  	    <% @already_responded = true %>
+    	    <% break %>
+          <% end %>
+	<% end %>
+       <% end %>
+
+	<% if !@already_responded %>
+	  <%= link_to "Vote", {action: "fan_vote", poll_id: poll.owner_id}, {id: "fan_vote_" + poll.owner_id.to_s, method: :post, remote: true} %></p>
+
+         <div class="fan_votes" id=<%= "poll_response_" + poll.owner_id.to_s %>>
+         <%= form_tag('/active_user/submit_fan_vote') do %>
+ 	   <% @fan_poll_options = FanPollOption.where('poll_id = ' + poll.id.to_s) %> 
+	     <% if @fan_poll_options && !@fan_poll_options.empty? %>
+		<% @count = 1 %>
+		<% @fan_poll_options.each do |option| %>
+		   <input type=radio name=<%= "option_" + @count.to_s %>><span id="vote_option">	<%= option.option %></span></input>
+		   <br>
+		  <% @count = @count + 1 %>
+		<% end %>
+	     <% end %>
+           <%= hidden_field_tag 'poll_id', poll.id %>
+           <%= hidden_field_tag 'poll_owner_id', poll.owner_id %>
+           <br>
+    	   <%= submit_tag "Vote", {'id' => 'poll_fans_button'} %>
+         <% end %>
+	</div>
+	<% else %>
+	 <span id="already_responded">Already Voted</span>
+       <% end %>
+   <% end %> 
+<% end %>
+</div>
+

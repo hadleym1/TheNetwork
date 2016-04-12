@@ -1,0 +1,11 @@
+<% if @fan_messages %>
+   <% @fan_messages.each do |message| %>
+	$('#updates').append("<p class='fan_updates' id='update_<%=message.owner_id%>'><b><%= User.find(message.owner_id).username %></b>:	<%= message.message %> </p>");
+   <% end %>
+   <% @href = '/active_user/load_updates?count=' %> 
+   var numUpdates = $('#updates p').size() + 1;
+   $('#load_more_updates').detach().appendTo('#updates');
+   $('#load_more_updates').attr('href',"<%= @href %>" + numUpdates);
+<% end %>
+
+

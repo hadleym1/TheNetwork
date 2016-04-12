@@ -1,0 +1,16 @@
+var response = document.getElementById("<%= 'poll_response_' + @poll_id.to_s %>");
+var response_link = document.getElementById("<%= 'fan_vote_' + @poll_id.to_s %>");
+
+if (response && response_link)
+{
+   if (response.style.display == "none" || response.style.display == "")
+   {
+     response.style.display = "block";
+     response_link.innerHTML = "Don't Vote"; 
+   }
+   else
+   {
+     response.style.display = "none";
+     response_link.innerHTML = "Vote"; 
+   }
+}

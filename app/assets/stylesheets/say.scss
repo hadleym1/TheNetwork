@@ -1,0 +1,106 @@
+// Place all the styles related to the Say controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+// Welcome to the Network! heading
+
+h1 {
+  color: #f1a629;
+}
+
+h2 {
+  color: #f1a629;
+}
+
+p {
+  color: #ECECEC;
+}
+
+fieldset {
+  color: #f1a629;
+}
+
+#sign_up_button, #login_button{
+  border: none;
+}
+
+// div that gives validation errors
+#error_explanation {
+     margin-left: auto;
+     margin-right: auto;
+}
+
+.login_form {
+   fieldset {
+     //width: 320px;
+     border-radius: 5px;
+     margin-left: auto;
+     margin-right: auto;
+   }
+}
+
+.signup_form {
+   fieldset {
+    // width: 320px;
+     border-radius: 5px;
+     margin-left: auto;
+     margin-right: auto;
+   }
+}
+
+form {
+  label {
+   width: 5em;
+   float: left;
+   text-align: right;
+   padding-top: 0.2em;
+   margin-right: 0.1em;
+   display: block;
+   color: #ECECEC;
+  }
+ 
+  input {
+   margin-left: 0.5em;
+  }
+
+  .actions {
+   text-align: right;
+  }
+}
+
+@media screen and (device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)
+{
+ .login_form, .signup_form {
+   width: 265px;
+   margin-left: 20px;
+
+ }
+
+ input {
+   -webkit-appearance: none;
+   -moz-appearance: none;
+   appearance: none;
+ }
+  #sign_up_button, #login_button{
+    border: none;
+    background-color: white;
+    border-radius: 2px;
+    padding: 6px;
+    height: 40px;
+    font-size: 14pt;
+  }
+
+ #user_username, #user_password, #user_password_confirmation {
+    width: 250px;
+    height: 40px;
+    font-size: 14pt;
+ }
+ 
+ fieldset {
+    font-size: 14pt;
+ }
+ 
+}
+
+
