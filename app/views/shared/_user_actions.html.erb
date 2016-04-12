@@ -1,0 +1,52 @@
+<div id="user_actions">
+<div id="current_update">
+ <% if session[:current_update] && !session[:current_update].empty?%>
+  <p><b>Your update</b>: <%= session[:current_update] %>
+    <br> 
+   <% if session[:current_update_type] == 2 %>
+     <%= link_to "Show Responses", {action: "show_hide_responses"},{id: "show_hide_responses", method: :post, remote: true} %>
+     <div id="fan_responses"></div>
+   <% elsif session[:current_update_type] == 3 %>
+     <%= link_to "Show Results", {action: "show_hide_results"},{id: "show_hide_results", method: :post, remote: true} %>
+     <div id="fan_vote_results"></div>
+   <% end %>
+  </p>
+ <% end %>
+</div>
+
+ <div id="message_form">
+  <%= form_tag('/active_user/send_fan_message') do %>
+    <%= text_field_tag :message, params[:message], { :placeholder => 'Show a message', :size => 30, :id => 'send_message_field' } %>
+    <%= submit_tag "Show", {'id' => 'send_fan_message_button'} %>
+  <% end %>
+ </div>
+ <br>
+ <br>
+ Or:
+ <br>
+ <br>
+ <div id="question_form">
+  <%= form_tag('/active_user/ask_fan_question') do %>
+    <%= text_field_tag :question, params[:question], { :placeholder => 'Ask a question', :size => 30, :id => 'question_field' } %>
+    <%= submit_tag "Ask", {'id' => 'send_fan_message_button'} %>
+  <% end %>
+ </div>
+ <br>
+ <br>
+  Or:
+ <br>
+ <br>
+ <div id="poll_form">
+  <%= form_tag('/active_user/poll_fans') do %>
+    <%= text_field_tag :poll_question, params[:poll_question], { :placeholder => 'Poll Question', :size => 30, :id => 'poll_question_field' } %>
+    <%= submit_tag "Poll", {'id' => 'poll_fans_button'} %>
+    <br>
+    How many options to select from?
+    <select id="num_options" name="num_options"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select>   
+    <div id="poll_options">
+ 	<br>
+	<input name="option_1" placeholder="Option 1" type='text'></input><br><br>
+    </div>
+  <% end %>
+ </div>
+</div>
