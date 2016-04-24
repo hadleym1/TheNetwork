@@ -7,6 +7,29 @@ class ActiveUserController < ApplicationController
      @active_user_name = User.find(@active_user_id).username
      @fan_requests = FanRequest.where('owner_id = ' + @active_user_id.to_s + ' or user_id = ' + @active_user_id.to_s)
 
+     @active_user_message_type = nil 
+     @active_user_update = nil
+     @user_message_type = FanMessageType.where('fan_id = ' + @active_user_id.to_s)
+     if @user_message_type && !@user_message_type.empty?
+	@active_user_message_type = @user_message_type.first.message_type
+        if @active_user_message_type == 1
+	  @active_user_message = FanMessage.where('owner_id = ' + @active_user_id.to_s)
+	  if @active_user_message && !@active_user_message.empty?
+	     @active_user_update = @active_user_message.first.message
+  	  end 
+        elsif @active_user_message_type == 2
+	  @active_user_question = FanQuestion.where('owner_id = ' + @active_user_id.to_s)
+	  if @active_user_question && !@active_user_question.empty?
+	     @active_user_update = @active_user_question.first.question
+  	  end 
+        elsif @active_user_message_type == 3
+	  @active_user_poll = FanPoll.where('owner_id = ' + @active_user_id.to_s)
+	  if @active_user_poll && !@active_user_poll.empty?
+	     @active_user_update = @active_user_poll.first.question
+  	  end 
+	end 
+     end 
+
      @fans = Fan.where('owner_id = ' + @active_user_id.to_s)
      @fan_messages = Array.new
      @fan_questions = Array.new
@@ -36,27 +59,32 @@ class ActiveUserController < ApplicationController
        end
 
        @count = @count + 1
+      end
      end
+  
+    respond_to do |format|
+       format.html 
+    end
+  end
 
+  def event_update
    @events = ChatEvent.all
    @event_msg = "" 
    @requesting_user = nil 
 
-     @events.each do |event|
-      if (event && event.owner_id && event.target_id && event.target_id == @active_user_id)  	 
-    	   @requesting_user = User.find(event.owner_id)
-  	   if (@requesting_user != nil)
-             @event_msg = @requesting_user.username + " wants to chat"
-	     # event has been handled. Delete.
-	     event.delete  
-  	   end
-        end
-      end
+   @events.each do |event|
+     if (event && event.owner_id && event.target_id && event.target_id == @active_user_id)  	 
+      @requesting_user = User.find(event.owner_id)
+     if (@requesting_user != nil)
+         @event_msg = @requesting_user.username + " wants to chat"
+         # event has been handled. Delete.
+         event.delete  
+     end
     end
+   end
 
     respond_to do |format|
-       format.js { render 'event_update' }
-       format.html 
+       format.js
     end
   end
 
@@ -194,12 +222,15 @@ class ActiveUserController < ApplicationController
 
 	@sum = @option1 + @option2 + @option3 + @option4 + @option5
 
-	if @sum != 0  
-          @percentage1 = (@option1/@sum).round
-          @percentage2 = (@option2/@sum).round
-          @percentage3 = (@option3/@sum).round
-          @percentage4 = (@option4/@sum).round
-          @percentage5 = (@option5/@sum).round
+	# don't do integer division
+	@sum += 0.0
+
+	if @sum != 0.0
+          @percentage1 = ((@option1/@sum)*100).round
+          @percentage2 = ((@option2/@sum)*100).round
+          @percentage3 = ((@option3/@sum)*100).round
+          @percentage4 = ((@option4/@sum)*100).round
+          @percentage5 = ((@option5/@sum)*100).round
 	end
 
      @fan_poll_options = FanPollOption.where('poll_id = ' + @fan_polls.first.id.to_s)
@@ -232,7 +263,19 @@ class ActiveUserController < ApplicationController
     	@new_fan.user_id = @new_fan_id
     	@new_fan.save
     end
- 
+
+    # by default, make this user a fan of the requesting user also
+
+    @fan2 = Fan.where('user_id = ' + session[:user_id].to_s + ' and owner_id = ' + @new_fan_id.to_s)
+    
+    #no duplicate fans
+    if @fan2 && @fan2.empty?
+    	@new_fan2 = Fan.new
+    	@new_fan2.user_id = session[:user_id]
+    	@new_fan2.owner_id = @new_fan_id
+    	@new_fan2.save
+    end
+
     @req = FanRequest.where('owner_id = ' + @new_fan_id.to_s)
 
     if @req && @req[0] 
@@ -252,6 +295,19 @@ class ActiveUserController < ApplicationController
     @number_options = params[:num_options] 
 
     @active_user_id = session[:user_id]
+
+    @previous_polls = FanPoll.where('owner_id = ' + @active_user_id.to_s) 
+    if @previous_polls && !@previous_polls.empty?
+	@previous_polls.each do |poll|  
+	  FanPoll.delete(poll.id)
+	  @previous_poll_options = FanPollOption.where('poll_id = ' + poll.id.to_s)
+	  if @previous_poll_options && !@previous_poll_options.empty?
+	    @previous_poll_options.each do |option| 
+	     FanPollOption.delete(option.id)
+	    end
+  	  end
+	end
+    end
 
     @poll = FanPoll.new	
     @poll.question = @poll_question

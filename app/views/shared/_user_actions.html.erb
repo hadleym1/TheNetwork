@@ -1,12 +1,12 @@
 <div id="user_actions">
 <div id="current_update">
- <% if session[:current_update] && !session[:current_update].empty?%>
-  <p><b>Your update</b>: <%= session[:current_update] %>
+ <% if @active_user_message_type %>
+  <p><b>Your update</b>: <%= @active_user_update %>
     <br> 
-   <% if session[:current_update_type] == 2 %>
+   <% if @active_user_message_type == 2 %>
      <%= link_to "Show Responses", {action: "show_hide_responses"},{id: "show_hide_responses", method: :post, remote: true} %>
      <div id="fan_responses"></div>
-   <% elsif session[:current_update_type] == 3 %>
+   <% elsif @active_user_message_type == 3 %>
      <%= link_to "Show Results", {action: "show_hide_results"},{id: "show_hide_results", method: :post, remote: true} %>
      <div id="fan_vote_results"></div>
    <% end %>
@@ -45,7 +45,7 @@
     <select id="num_options" name="num_options"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select>   
     <div id="poll_options">
  	<br>
-	<input name="option_1" placeholder="Option 1" type='text'></input><br><br>
+	<input id="option_field" name="option_1" placeholder="Option 1" type='text'></input><br><br>
     </div>
   <% end %>
  </div>

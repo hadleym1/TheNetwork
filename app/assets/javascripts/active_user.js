@@ -4,7 +4,7 @@ $(function () {
 
 function checkForEvents()
 {
-    $.getScript('/active_user/home');  
+    $.getScript('/active_user/event_update');  
     setTimeout(checkForEvents, 10000);
 }
 

@@ -24,6 +24,8 @@ Rails.application.routes.draw do
   post 'active_user/fan_vote' => 'active_user#fan_vote'
   post 'active_user/show_hide_results' => 'active_user#show_hide_results'
 
+  get 'active_user/event_update' => 'active_user#event_update'
+
   post 'chat/index' => 'chat#index'
   post 'chat/update' => 'chat#update'
   

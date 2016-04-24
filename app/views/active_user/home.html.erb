@@ -1,4 +1,3 @@
-<%= javascript_include_tag 'active_user.js' %>
 <script>
 $(function () {  
    setTimeout(checkForEvents, 10000);  
@@ -6,13 +5,13 @@ $(function () {
 
 function checkForEvents()
 {
-    $.getScript('/active_user/home');  
+    $.getScript('/active_user/event_update');  
     setTimeout(checkForEvents, 10000);
 }
 
 function chatWithLocalUser(user)
 {
-   window.open('/chat/index?remote=false&user=' + user, "Chat", "top=200, left=200, width=450, height=400");
+   window.open('/chat/index?remote=false&user=' + user, "Chat", "top=200, left=200, width=450, height=500");
 }
 
 function clearEvents()
@@ -40,6 +39,15 @@ function clearEvents()
 
  
 <div id="main_content">
+<% if session[:mobile_device] %>
+ <%= render partial: "shared/user_actions" %>
+
+ <div id="main_content_headers">
+   <h2 id="updates_header">Fan Updates</h2>
+ </div>
+ <%= render partial: "shared/updates" %>
+
+<% else %>
  <div id="main_content_headers">
    <h2 id="updates_header">Fan Updates</h2>
  </div>
@@ -47,7 +55,7 @@ function clearEvents()
  <%= render partial: "shared/updates" %>
 
  <%= render partial: "shared/user_actions" %>
-
+<% end %>
 </div>
 
 <script>
@@ -60,11 +68,11 @@ function clearEvents()
      for (var i = 0; i < num; i++) 
      {
         var name = "name=option_" + (i+1).toString();
-        poll_options.innerHTML += "<input " + name + " placeholder='Option " + (i+1).toString() + "' type='text'></input>"
-  	if (i == 1 || i == 3)
-	{
-	   poll_options.innerHTML += "<br><br>";
-	}
+        poll_options.innerHTML += "<input id='option_field' " + name + " placeholder='Option " + (i+1).toString() + "' type='text'></input><br><br>"
+ // 	if (i == 1 || i == 3)
+//	{
+//	   poll_options.innerHTML += "<br><br>";
+//	}
      }
  }
 

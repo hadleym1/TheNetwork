@@ -77,6 +77,11 @@
   text-align: left;
 }
 
+#results_1, #results_2, #results_3 {
+  display: inline-block;
+  width: 150px;
+}
+
 h3 {
   color: #f1a629;
 }
@@ -129,12 +134,11 @@ h2 {
   margin-left: 170px;
 }
 
-
 #updates {
   display: inline-block;
   margin-left: 50px;
   text-align: center;
-  height: 400px;
+  height: 500px;
   width: 300px;
   overflow-y: auto;
   overflow-x: auto;
@@ -156,13 +160,27 @@ h2 {
   margin-left: 130px;
 }
 
+#num_options {
+  width: 50px; 
+  height: 30px;
+  font-size: 14pt;
+}
+
 #updates {
-  //display: inline-block;
+  display: block;
   text-align: center;
   height: 300px;
   width: 200px;
   overflow-y: auto;
   overflow-x: auto;
+}
+
+#user_actions {
+   display: block;
+   margin-left: 0px;
+   color: white;
+   text-align: center;
+   padding-bottom: 100px;
 }
 
 #send_message_field, #question_field, #poll_question_field {
@@ -172,6 +190,16 @@ h2 {
   width: 220px;
   font-size: 14pt;
   padding-left: 5px;
+}
+
+#option_field {
+  border: none;
+  padding: 2px;
+  height: 30px;
+  width: 220px;
+  font-size: 14pt;
+  padding-left: 5px;
+//  margin-bottom: 10px;
 }
 
 #search_field {
@@ -199,9 +227,9 @@ h2 {
   //display: none;
 }
 
-select {
-   -webkit-appearance: none;
-   -moz-appearance: none;
-   background-color: white;
- }
+//select {
+  // -webkit-appearance: none;
+  // -moz-appearance: none;
+ //  background-color: white;
+// }
 }

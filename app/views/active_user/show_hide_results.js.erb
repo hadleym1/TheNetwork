@@ -6,15 +6,15 @@ $('#fan_vote_results').html("");
   <% @fan_poll_options.each do |option| %>
     <% @count = @count + 1 %>
     <% if @count == 1 %>
-      $('#fan_vote_results').append("<p><b>Option 1: </b><%= option.option %> (<%= @percentage1.to_s %>%)</p>");
+      $('#fan_vote_results').append("<p><b>Option 1: </b><%= option.option %> (<%= @percentage1.to_s %>%) <%= @option1.to_s %> votes</p>");
     <% elsif @count == 2 %>
-      $('#fan_vote_results').append("<p><b>Option 2: </b><%= option.option %> (<%= @percentage2.to_s %>%)</p>");
+      $('#fan_vote_results').append("<p><b>Option 2: </b><%= option.option %> (<%= @percentage2.to_s %>%) <%= @option2.to_s %> votes</p>");
     <% elsif @count == 3 %>
-      $('#fan_vote_results').append("<p><b>Option 3: </b><%= option.option %> (<%= @percentage3.to_s %>%)</p>");
+      $('#fan_vote_results').append("<p><b>Option 3: </b><%= option.option %> (<%= @percentage3.to_s %>%) <%= @option3.to_s %> votes</p>");
     <% elsif @count == 4 %>
-      $('#fan_vote_results').append("<p><b>Option 4: </b><%= option.option %> (<%= @percentage4.to_s %>%)</p>");
+      $('#fan_vote_results').append("<p><b>Option 4: </b><%= option.option %> (<%= @percentage4.to_s %>%)  <%= @option4.to_s %> votes</p>");
     <% elsif @count == 5 %>
-      $('#fan_vote_results').append("<p><b>Option 5: </b><%= option.option %> (<%= @percentage5.to_s %>%)</p>");
+      $('#fan_vote_results').append("<p><b>Option 5: </b><%= option.option %> (<%= @percentage5.to_s %>%)  <%= @option5.to_s %> votes</p>");
     <% end %>
   <% end %>
  <% end %>

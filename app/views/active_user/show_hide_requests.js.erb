@@ -3,9 +3,9 @@ $('#fan_requests').html("");
   $('#show_hide').html("Hide");
   <% @fan_requests.each do |request| %>
     <% if (request.user_id == @active_user_id) %>
-      $('#fan_requests').append("User <b><%= User.find(request.owner_id).username %></b>  wants to become a fan of yours. <a data-method='post' href='/active_user/accept_fan?param=<%= request.owner_id %>'>Accept</a>  <a data-method='post' href='/active_user/ignore_fan?param=<%= request.owner_id %>'>Ignore</a>  \n");
+      $('#fan_requests').append("User <b><%= User.find(request.owner_id).username %></b>  wants to become a fan of yours. <a data-method='post' href='/active_user/accept_fan?param=<%= request.owner_id %>'>Accept</a>  <a data-method='post' href='/active_user/ignore_fan?param=<%= request.owner_id %>'>Ignore</a><br><br>");
     <% else %>
-      $('#fan_requests').append("You have requested to become a fan of user <b><%= User.find(request.user_id).username %></b> \n");
+      $('#fan_requests').append("You have requested to become a fan of user <b><%= User.find(request.user_id).username %></b><br><br>");
     <% end %>
   <% end %>
 <% else %>
