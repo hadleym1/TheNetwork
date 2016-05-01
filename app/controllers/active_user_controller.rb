@@ -61,7 +61,59 @@ class ActiveUserController < ApplicationController
        @count = @count + 1
       end
      end
-  
+
+    @percentage1 = 0  
+    @percentage2 = 0  
+    @percentage3 = 0  
+    @percentage4 = 0 
+    @percentage5 = 0  
+
+    if @fan_polls && !@fan_polls.empty? 
+  	if @fan_polls.first.option_1 == nil
+	  @option1 = 0 
+  	else
+	  @option1 = @fan_polls.first.option_1
+        end
+
+  	if @fan_polls.first.option_2 == nil
+	  @option2 = 0 
+  	else
+	  @option2 = @fan_polls.first.option_2
+        end
+
+  	if @fan_polls.first.option_3 == nil
+	  @option3 = 0 
+  	else
+	  @option3 = @fan_polls.first.option_3
+        end
+
+  	if @fan_polls.first.option_4 == nil
+	  @option4 = 0 
+  	else
+	  @option4 = @fan_polls.first.option_4
+        end
+
+  	if @fan_polls.first.option_5 == nil
+	  @option5 = 0 
+  	else
+	  @option5 = @fan_polls.first.option_5
+        end
+
+	@sum = @option1 + @option2 + @option3 + @option4 + @option5
+
+	# don't do integer division
+	@sum += 0.0
+
+	if @sum != 0.0
+          @percentage1 = ((@option1/@sum)*100).round
+          @percentage2 = ((@option2/@sum)*100).round
+          @percentage3 = ((@option3/@sum)*100).round
+          @percentage4 = ((@option4/@sum)*100).round
+          @percentage5 = ((@option5/@sum)*100).round
+	end
+    end
+
+
     respond_to do |format|
        format.html 
     end
