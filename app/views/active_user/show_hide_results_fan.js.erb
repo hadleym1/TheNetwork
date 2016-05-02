@@ -1,0 +1,22 @@
+//////////////////////////////////////////////////////////////////////
+// author: hadleym
+// date: 5/2/16
+// Property of Hadley Productions
+/////////////////////////////////////////////////////////////////////
+
+var resultsDiv = document.getElementById('poll_results_<%= @poll_id.to_s %>');
+
+if (resultsDiv)
+{
+   if (resultsDiv.style.display == "inline")
+   {
+	$('#show_hide_results_fan_<%= @poll_id.to_s %>').html("Show Results");
+   	resultsDiv.style.display = "none";  
+   }
+   else
+   {
+	$('#show_hide_results_fan_<%= @poll_id.to_s %>').html("Hide Results");
+   	resultsDiv.style.display = "inline";  
+   }
+}
+

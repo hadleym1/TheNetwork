@@ -1,3 +1,9 @@
+<!--------------------------------------------------------------------------
+  author: hadleym
+  date: 5/2/16
+  Property of Hadley Productions
+!---------------------------------------------------------------------------->
+
 <div id="updates">
 <% if @fan_messages %>
    <% @fan_messages.each do |message| %>
@@ -75,6 +81,11 @@
 	</div>
 	<% else %>
 	<span id="already_responded">Already Voted</span>
+	<br>
+     	<%= link_to "Show Results", {action: "show_hide_results_fan", poll_id: poll.owner_id},{id: "show_hide_results_fan_" + poll.owner_id.to_s , method: :post, remote: true} %>
+
+        <div class='vote_results_fan' id=<%= "poll_results_" + poll.owner_id.to_s %>>
+
  	<% @fan_poll_options = FanPollOption.where('poll_id = ' + poll.id.to_s) %> 
 	<% @percentage1 = 0 %>
     	<% @percentage2 = 0 %>
@@ -142,6 +153,7 @@
     	<% end %>
        <% end %>
        <% end %> 
+	</div>
      <% end %>
   <% end %>
 <% end %>

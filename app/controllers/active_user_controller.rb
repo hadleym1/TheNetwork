@@ -1,3 +1,9 @@
+####################################################################
+# author: hadleym
+# date: 5/2/16
+# Property of Hadley Productions
+####################################################################
+
 class ActiveUserController < ApplicationController
   def home
    @active_user_id = session[:user_id]
@@ -229,6 +235,16 @@ class ActiveUserController < ApplicationController
    end 
   end 
 
+  # handle show/hiding of voting results for a specific fan
+  def show_hide_results_fan
+   @active_user_id = session[:user_id]
+   @poll_id = params[:poll_id]
+   respond_to do |format|
+     format.js
+   end 
+  end 
+
+  # handle show/hiding of voting results for the active user
   def show_hide_results
    @active_user_id = session[:user_id]
    session[:show_hide_results] = !session[:show_hide_results] 
