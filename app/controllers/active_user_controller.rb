@@ -221,6 +221,7 @@ class ActiveUserController < ApplicationController
   def fan_vote 
    @active_user_id = session[:user_id]
    @poll_id = params[:poll_id]
+   @poll_owner_id = params[:poll_owner_id]
    respond_to do |format|
      format.js
    end 
@@ -542,11 +543,31 @@ class ActiveUserController < ApplicationController
     end
   end
 
+  # load more fan updates (only load the first 50 by default)
+
   def load_updates
+    # count is the number of updates currently loaded
+
     if params[:count] 
        @count = params[:count].to_i
        @count = @count + 1
+
+       # we have the current number of updates, now load some more (by default 5up to 50)
+       # each update could be either a message, question, or poll
+
+       @fan_messages = nil
+       @fan_questions = nil
+       @fan_polls = nil
+
        @fan_messages = FanMessage.where('owner_id > ' + @count.to_s + ' and owner_id < ' + (@count + 50).to_s)
+       if @fan_messages && @fan_messages.count < 50
+	 @fan_questions = FanQuestion.where('owner_id > ' + @count.to_s + ' and owner_id < ' + (@count + 50).to_s)
+
+	 if @fan_questions && @fan_questions.count < 50
+      	   @fan_polls = FanPoll.where('owner_id > ' + @count.to_s + ' and owner_id < ' + (@count + 50).to_s)
+	  
+	 end
+       end
     end
 
     respond_to do |format|

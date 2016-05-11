@@ -4,158 +4,19 @@
   Property of Hadley Productions
 !---------------------------------------------------------------------------->
 
+<!-- display the updates from fans !-->
+
 <div id="updates">
-<% if @fan_messages %>
-   <% @fan_messages.each do |message| %>
-	<p class="fan_updates" id='update_<%=message.owner_id%>'><a href='/show_user/index?id=<%= message.owner_id %>'><b><%= User.find(message.owner_id).username %></b></a>:	<%= message.message %> </p>
-   <% end %>
-<% end %>
 
-<% if @fan_questions %>
-   <% @fan_questions.each do |question| %>
-	<p class="fan_updates" id='update_<%=question.owner_id%>'><a href='/show_user/index?id=<%= question.owner_id %>'><b><%= User.find(question.owner_id).username %></b></a>:	<%= question.question %> 
-	<br>
-       <% @already_responded = false %>
-       <% @responded = FanResponded.where("fan_id = " + session[:user_id].to_s)%>
-       <% if @responded && !@responded.empty? %>
-        <% @responded.each do |response| %>
- 	  <% if response.responded_to == question.owner_id %>
-  	    <% @already_responded = true %>
-	    <% break %>
-          <% end %>
-	<% end %>
-       <% end %>
+<!-- load the three different update types !-->
 
-	<% if !@already_responded %>
-	  <%= link_to "Respond", {action: "respond_to_question", question_id: question.owner_id}, {id: "respond_to_question_" + question.owner_id.to_s, method: :post, remote: true} %></p>
+<%= render partial: "shared/load_message_updates" %>
 
-          <div class="question_responses" id=<%= "question_response_" + question.owner_id.to_s %>>
-         <%= form_tag('/active_user/respond_to_fan') do %>
-    	   <%= text_area_tag :response, params[:response], { :placeholder => 'Response', :cols => 20, :rows => 5, :id => 'response_text_area' } %>
-           <%= hidden_field_tag 'response_id', question.owner_id %>
-           <br>
-    	   <%= submit_tag "Respond", {'id' => 'respond_button'} %>
-         <% end %>
-	</div>
-	<% else %>
-	 <span id="already_responded">Already Responded</span>
-       <% end %>
-   <% end %> 
-<% end %>
+<%= render partial: "shared/load_question_updates" %>
 
-<% if @fan_polls %>
-   <% @fan_polls.each do |poll| %>
-	<p class="fan_updates" id='update_<%=poll.owner_id%>'><a href='/show_user/index?id=<%= poll.owner_id %>'><b><%= User.find(poll.owner_id).username %></b></a>:	<%= poll.question %> 
-	<br>
+<%= render partial: "shared/load_poll_updates" %>
 
-	<% @already_responded = false %>
-       <% @responded = FanResponded.where("fan_id = " + session[:user_id].to_s)%>
-       <% if @responded && !@responded.empty? %>
-        <% @responded.each do |response| %>
- 	  <% if response.responded_to == poll.owner_id %>
-  	    <% @already_responded = true %>
-    	    <% break %>
-          <% end %>
-	<% end %>
-       <% end %>
-
-	<% if !@already_responded %>
-	  <%= link_to "Vote", {action: "fan_vote", poll_id: poll.owner_id}, {id: "fan_vote_" + poll.owner_id.to_s, method: :post, remote: true} %></p>
-
-         <div class="fan_votes" id=<%= "poll_response_" + poll.owner_id.to_s %>>
-         <%= form_tag('/active_user/submit_fan_vote') do %>
- 	   <% @fan_poll_options = FanPollOption.where('poll_id = ' + poll.id.to_s) %> 
-	     <% if @fan_poll_options && !@fan_poll_options.empty? %>
-		<% @count = 1 %>
-		<% @fan_poll_options.each do |option| %>
-		   <input type=radio name=<%= "option_" + @count.to_s %>><span id="vote_option">	<%= option.option %></span></input>
-		   <br>
-		  <% @count = @count + 1 %>
-		<% end %>
-	     <% end %>
-           <%= hidden_field_tag 'poll_id', poll.id %>
-           <%= hidden_field_tag 'poll_owner_id', poll.owner_id %>
-           <br>
-    	   <%= submit_tag "Vote", {'id' => 'poll_fans_button'} %>
-         <% end %>
-	</div>
-	<% else %>
-	<span id="already_responded">Already Voted</span>
-	<br>
-     	<%= link_to "Show Results", {action: "show_hide_results_fan", poll_id: poll.owner_id},{id: "show_hide_results_fan_" + poll.owner_id.to_s , method: :post, remote: true} %>
-
-        <div class='vote_results_fan' id=<%= "poll_results_" + poll.owner_id.to_s %>>
-
- 	<% @fan_poll_options = FanPollOption.where('poll_id = ' + poll.id.to_s) %> 
-	<% @percentage1 = 0 %>
-    	<% @percentage2 = 0 %>
-    	<% @percentage3 = 0 %>
-    	<% @percentage4 = 0 %>
-    	<% @percentage5 = 0 %> 
-
-  	<% if @fan_polls.first.option_1 == nil %>
-	 <% @option1 = 0 %>
-  	<% else %>
-	  <% @option1 = @fan_polls.first.option_1 %>
-        <% end %>
-
-  	<% if @fan_polls.first.option_2 == nil %>
-	  <% @option2 = 0 %>
-  	<% else %>
-	  <% @option2 = @fan_polls.first.option_2 %>
-        <% end %>
-
-  	<% if @fan_polls.first.option_3 == nil %>
-	  <% @option3 = 0 %>
-  	<% else %>
-	  <% @option3 = @fan_polls.first.option_3 %>
-        <% end %>
-
-  	<% if @fan_polls.first.option_4 == nil %>
-	  <% @option4 = 0 %>
-  	<% else %>
-	  <% @option4 = @fan_polls.first.option_4 %>
-        <% end %>
-
-  	<% if @fan_polls.first.option_5 == nil %>
-	  <% @option5 = 0 %>
-  	<% else %>
-	  <% @option5 = @fan_polls.first.option_5 %>
-        <% end %>
-
-	<% @sum = @option1 + @option2 + @option3 + @option4 + @option5 %>
-
-	<% @sum += 0.0 %>
-
-	<% if @sum != 0.0 %>
-          <% @percentage1 = ((@option1/@sum)*100).round %>
-          <% @percentage2 = ((@option2/@sum)*100).round %>
-          <% @percentage3 = ((@option3/@sum)*100).round %>
-          <% @percentage4 = ((@option4/@sum)*100).round %>
-          <% @percentage5 = ((@option5/@sum)*100).round %>
-	<% end %>
-
-        <% if @fan_poll_options && !@fan_poll_options.empty? %>
-        <% @count = 0 %>
-        <% @fan_poll_options.each do |option| %>
-
-         <% @count = @count + 1 %>
-    	 <% if @count == 1 %>
-      		<p><b>Option 1: </b><%= option.option %> (<%= @percentage1.to_s %>%) <%= @option1.to_s %> votes</p>
-    	 <% elsif @count == 2 %>
-      		<p><b>Option 2: </b><%= option.option %> (<%= @percentage2.to_s %>%) <%= @option2.to_s %> votes</p>
-    	 <% elsif @count == 3 %>
-      		<p><b>Option 3: </b><%= option.option %> (<%= @percentage3.to_s %>%) <%= @option3.to_s %> votes</p>
-     	 <% elsif @count == 4 %>
-      		<p><b>Option 4: </b><%= option.option %> (<%= @percentage4.to_s %>%)  <%= @option4.to_s %> votes</p>
-    	 <% elsif @count == 5 %>
-      		<p><b>Option 5: </b><%= option.option %> (<%= @percentage5.to_s %>%)  <%= @option5.to_s %> votes</p>
-    	<% end %>
-       <% end %>
-       <% end %> 
-	</div>
-     <% end %>
-  <% end %>
-<% end %>
+<% @update_count = @fan_messages.count + @fan_questions.count + @fan_polls.count%>
+ <%= link_to "Load more updates...", {action: "load_updates", count: @update_count},{id: "load_more_updates", method: :post, remote: true} %>
 </div>
 

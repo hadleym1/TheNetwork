@@ -1,0 +1,32 @@
+<% if @fan_questions %>
+   <% @fan_questions.each do |question| %>
+	<p class="fan_updates" id='update_<%=question.owner_id%>'><a href='/show_user/index?id=<%= question.owner_id %>'><b><%= User.find(question.owner_id).username %></b></a>:	<%= question.question %> 
+	<br>
+       <% @already_responded = false %>
+       <% @responded = FanResponded.where("fan_id = " + session[:user_id].to_s)%>
+       <% if @responded && !@responded.empty? %>
+        <% @responded.each do |response| %>
+ 	  <% if response.responded_to == question.owner_id %>
+  	    <% @already_responded = true %>
+	    <% break %>
+          <% end %>
+	<% end %>
+       <% end %>
+
+	<% if !@already_responded %>
+	  <%= link_to "Respond", {action: "respond_to_question", question_id: question.owner_id}, {id: "respond_to_question_" + question.owner_id.to_s, method: :post, remote: true} %></p>
+
+          <div class="question_responses" id=<%= "question_response_" + question.owner_id.to_s %>>
+         <%= form_tag('/active_user/respond_to_fan') do %>
+    	   <%= text_area_tag :response, params[:response], { :placeholder => 'Response', :cols => 20, :rows => 5, :id => 'response_text_area' } %>
+           <%= hidden_field_tag 'response_id', question.owner_id %>
+           <br>
+    	   <%= submit_tag "Respond", {'id' => 'respond_button'} %>
+         <% end %>
+	</div>
+	<% else %>
+	 <span id="already_responded">Already Responded</span>
+       <% end %>
+   <% end %> 
+<% end %>
+

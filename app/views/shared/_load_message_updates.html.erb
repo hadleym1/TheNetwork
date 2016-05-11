@@ -1,0 +1,7 @@
+<% if @fan_messages %>
+   <% @fan_messages.each do |message| %>
+	<p class="fan_updates" id='update_<%=message.owner_id%>'><a href='/show_user/index?id=<%= message.owner_id %>'><b><%= User.find(message.owner_id).username %></b></a>:	<%= message.message %> </p>
+   <% end %>
+<% end %>
+
+

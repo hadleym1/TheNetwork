@@ -20,25 +20,25 @@ FanMessageType.delete_all
 User.delete_all
 Fan.delete_all
 
-1.upto(20) do |i|
+1.upto(100) do |i|
    FanPoll.create!(question: "this is a test", owner_id: i)
 end 
 
-1.upto(20) do |k|
+1.upto(100) do |k|
  1.upto(5) do |i|
    FanPollOption.create!(option: "test " + i.to_s, poll_id: k)
  end 
 end
 
-2.upto(20) do |i|
+2.upto(100) do |i|
    FanMessageType.create!(message_type: 3, fan_id: i)
 end
 
-2.upto(20) do |i|
+2.upto(100) do |i|
    Fan.create!(user_id: i, owner_id: 1)
 end
 
-1.upto(20) do |i|
+1.upto(100) do |i|
    User.create!(username: "test" + i.to_s, password: "test" + i.to_s)
 end
 

@@ -1,11 +1,34 @@
-<% if @fan_messages %>
-   <% @fan_messages.each do |message| %>
-	$('#updates').append("<p class='fan_updates' id='update_<%=message.owner_id%>'><b><%= User.find(message.owner_id).username %></b>:	<%= message.message %> </p>");
-   <% end %>
-   <% @href = '/active_user/load_updates?count=' %> 
-   var numUpdates = $('#updates p').size() + 1;
-   $('#load_more_updates').detach().appendTo('#updates');
-   $('#load_more_updates').attr('href',"<%= @href %>" + numUpdates);
-<% end %>
+/////////////////////////////////////////////////////////////////////////////
+//  author: hadleym
+//  date: 5/2/16
+//  Property of Hadley Productions
+////////////////////////////////////////////////////////////////////////////
+
+// loop through each poll and append to the updates div
+
+   <% @fan_polls.each do |poll| %>
+	$('#updates').append("<br><br><span class='fan_updates' id='update_<%=poll.owner_id%>'><a href='/show_user/index?id=<%= poll.owner_id %>'><b><%= User.find(poll.owner_id).username %></b></a>:	<%= poll.question %> <br>");
+
+       <% @already_responded = false %>
+       <% @responded = FanResponded.where("fan_id = " + session[:user_id].to_s)%>
+       <% if @responded && !@responded.empty? %>
+        <% @responded.each do |response| %>
+ 	  <% if response.responded_to == poll.owner_id %>
+  	    <% @already_responded = true %>
+    	    <% break %>
+          <% end %>
+	<% end %>
+       <% end %>
+	<% if !@already_responded %>
+	  $('#updates').append('<%= link_to "Vote", {action: "fan_vote", poll_id: poll.id, poll_owner_id: poll.owner_id}, {id: "fan_vote_" + poll.owner_id.to_s, method: :post, remote: true} %></span><br>');
+         $('#updates').append('<div id=<%= "poll_response_" + poll.owner_id.to_s %>>');
+         $('#updates').append("</div>");
+	<% end %>
+    <% end %>
+
+<% @href = '/active_user/load_updates?count=' %> 
+var numUpdates = $('#updates p').size() + 1;
+$('#load_more_updates').detach().appendTo('#updates');
+$('#load_more_updates').attr('href',"<%= @href %>" + numUpdates);
 
 

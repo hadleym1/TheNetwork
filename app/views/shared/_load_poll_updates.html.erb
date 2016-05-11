@@ -1,0 +1,106 @@
+<!------------------------------------------------------------------------
+	author: hadleym
+	date: 5/9/16
+	Property of Hadley Productions
+!------------------------------------------------------------------------>
+<% if @fan_polls %>
+   <% @fan_polls.each do |poll| %>
+	<p class="fan_updates" id='update_<%=poll.owner_id%>'><a href='/show_user/index?id=<%= poll.owner_id %>'><b><%= User.find(poll.owner_id).username %></b></a>:	<%= poll.question %> 
+	<br>
+
+	<% @already_responded = false %>
+       <% @responded = FanResponded.where("fan_id = " + session[:user_id].to_s)%>
+       <% if @responded && !@responded.empty? %>
+        <% @responded.each do |response| %>
+ 	  <% if response.responded_to == poll.owner_id %>
+  	    <% @already_responded = true %>
+    	    <% break %>
+          <% end %>
+	<% end %>
+       <% end %>
+
+        <!-- display the voting options via ajax request in fan_vote.js.erb !-->
+
+	<% if !@already_responded %>
+	  <%= link_to "Vote", {action: "fan_vote", poll_id: poll.id, poll_owner_id: poll.owner_id}, {id: "fan_vote_" + poll.owner_id.to_s, method: :post, remote: true} %></p>
+
+         <div id='<%= "poll_response_" + poll.owner_id.to_s %>'>
+	 </div>
+	<% else %>
+	<span id="already_responded">Already Voted</span>
+	<br>
+     	<%= link_to "Show Results", {action: "show_hide_results_fan", poll_id: poll.owner_id},{id: "show_hide_results_fan_" + poll.owner_id.to_s , method: :post, remote: true} %>
+
+        <div class='vote_results_fan' id=<%= "poll_results_" + poll.owner_id.to_s %>>
+
+ 	<% @fan_poll_options = FanPollOption.where('poll_id = ' + poll.id.to_s) %> 
+	<% @percentage1 = 0 %>
+    	<% @percentage2 = 0 %>
+    	<% @percentage3 = 0 %>
+    	<% @percentage4 = 0 %>
+    	<% @percentage5 = 0 %> 
+
+  	<% if poll.option_1 == nil %>
+	 <% @option1 = 0 %>
+  	<% else %>
+	  <% @option1 = poll.option_1 %>
+        <% end %>
+
+  	<% if poll.option_2 == nil %>
+	  <% @option2 = 0 %>
+  	<% else %>
+	  <% @option2 = poll.option_2 %>
+        <% end %>
+
+  	<% if poll.option_3 == nil %>
+	  <% @option3 = 0 %>
+  	<% else %>
+	  <% @option3 = poll.option_3 %>
+        <% end %>
+
+  	<% if poll.option_4 == nil %>
+	  <% @option4 = 0 %>
+  	<% else %>
+	  <% @option4 = poll.option_4 %>
+        <% end %>
+
+  	<% if poll.option_5 == nil %>
+	  <% @option5 = 0 %>
+  	<% else %>
+	  <% @option5 = poll.option_5 %>
+        <% end %>
+
+	<% @sum = @option1 + @option2 + @option3 + @option4 + @option5 %>
+
+	<% @sum += 0.0 %>
+
+	<% if @sum != 0.0 %>
+          <% @percentage1 = ((@option1/@sum)*100).round %>
+          <% @percentage2 = ((@option2/@sum)*100).round %>
+          <% @percentage3 = ((@option3/@sum)*100).round %>
+          <% @percentage4 = ((@option4/@sum)*100).round %>
+          <% @percentage5 = ((@option5/@sum)*100).round %>
+	<% end %>
+
+        <% if @fan_poll_options && !@fan_poll_options.empty? %>
+        <% @count = 0 %>
+        <% @fan_poll_options.each do |option| %>
+
+         <% @count = @count + 1 %>
+    	 <% if @count == 1 %>
+      		<p><b>Option 1: </b><%= option.option %> (<%= @percentage1.to_s %>%) <%= @option1.to_s %> votes</p>
+	 <% elsif @count == 2 %>
+      		<p><b>Option 2: </b><%= option.option %> (<%= @percentage2.to_s %>%) <%= @option2.to_s %> votes</p>
+    	 <% elsif @count == 3 %>
+      		<p><b>Option 3: </b><%= option.option %> (<%= @percentage3.to_s %>%) <%= @option3.to_s %> votes</p>
+     	 <% elsif @count == 4 %>
+      		<p><b>Option 4: </b><%= option.option %> (<%= @percentage4.to_s %>%)  <%= @option4.to_s %> votes</p>
+    	 <% elsif @count == 5 %>
+      		<p><b>Option 5: </b><%= option.option %> (<%= @percentage5.to_s %>%)  <%= @option5.to_s %> votes</p>
+    	<% end %>
+       <% end %>
+       <% end %> 
+	</div>
+     <% end %>
+  <% end %>
+<% end %>

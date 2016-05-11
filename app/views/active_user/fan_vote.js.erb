@@ -1,16 +1,36 @@
-var response = document.getElementById("<%= 'poll_response_' + @poll_id.to_s %>");
-var response_link = document.getElementById("<%= 'fan_vote_' + @poll_id.to_s %>");
+var response = document.getElementById("<%= 'poll_response_' + @poll_owner_id.to_s %>");
+var response_link = document.getElementById("<%= 'fan_vote_' + @poll_owner_id.to_s %>");
 
+var divId = '#poll_response_' + '<%= @poll_owner_id.to_s %>';
 if (response && response_link)
 {
-   if (response.style.display == "none" || response.style.display == "")
-   {
-     response.style.display = "block";
-     response_link.innerHTML = "Don't Vote"; 
-   }
-   else
-   {
-     response.style.display = "none";
-     response_link.innerHTML = "Vote"; 
-   }
+     if (response_link.innerHTML == "Vote")	
+     {
+      response_link.innerHTML = "Don't Vote"; 
+      $(divId).append("<form action='/active_user/submit_fan_vote' method='post'>");
+	// need poll_id
+ 	   <% @fan_poll_options = FanPollOption.where('poll_id = ' + @poll_id.to_s) %> 
+	     <% if @fan_poll_options && !@fan_poll_options.empty? %>
+		<% @count = 1 %>
+		<% @fan_poll_options.each do |option| %>
+		   $(divId).append('<input type=radio name=<%= "option_" + @count.to_s %>><span id="vote_option">	<%= option.option %></span></input><br>');
+		  <% @count = @count + 1 %>
+		<% end %>
+	     <% end %>
+	   // append has some issues with the rails helpers... so use html version for now
+
+           $(divId).append("<input name='poll_id' value='<%= @poll_id %>' type=hidden </input>");
+           $(divId).append("<input name='poll_owner_id' value='<%= @poll_owner_id %>' type=hidden </input><br>");
+    	   $(divId).append("<input value='Vote' type=submit id='poll_fans_button' />");
+
+	  $(divId).append("</form></div>");
+	}
+ 	else
+	{
+   	   response_link.innerHTML = "Vote"; 
+   	   $(divId).html("");
+	}
 }
+
+
+
